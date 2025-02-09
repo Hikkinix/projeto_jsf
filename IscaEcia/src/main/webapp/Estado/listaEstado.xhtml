@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/index.xhtml">
+         <link rel="StyleSheet" type="text/css" href="css/cia.css" media="screen" ></link>
+      
+        <ui:define name="body">
+
+             <h:form>     
+                <p:growl id="messages" showDetail="true" />
+
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton value="Voltar" action="/index"/>
+                        <p:commandButton value="Novo" icon="ui-icon-document" 
+                                         action="/Estado/editaEstado"
+                                         actionListener="#{controleEstado.novo()}"/>
+                        <p:commandButton update="Detail" oncomplete="PF('Dialog').show()" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                         <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+
+                            <p:outputLabel value="Estado" />
+                    </f:facet>
+                </p:toolbar>
+               
+                <p:dataTable value="#{controleEstado.lista}" var="obj"
+                               paginator="true" rows="10"
+                             paginatorTemplate="{PreviousPageLink} {RowsPerPageDropdown} {NextPageLink}"
+                             rowsPerPageTemplate="3,5,10"
+                             id="tableest" selectionMode="single" 
+                             selection="#{controleEstado.est}" rowKey="#{obj.id}"
+                             style="border-collapse: collapse;">
+                    <p:column headerText="Código" filterBy="#{obj.id}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Nome" filterBy="#{obj.nome}" style="text-transform: capitalize;"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{obj.nome}"/>
+                    </p:column>
+                    <p:column headerText="Sigla" filterBy="#{obj.UF}"  style="text-transform: uppercase;" 
+                              filterMatchMode="contains">
+                        <h:outputText value="#{obj.UF}"/>
+                    </p:column>
+                    <p:column headerText="---" width="90">
+                        <p:commandButton icon="ui-icon-closethick"
+                                         ajax="false"
+                                         action="listaEstado.xhtml"
+                                         actionListener="#{controleEstado.excluir(obj)}"/>
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         immediate="true"
+                                         action="editaEstado.xhtml"
+                                         actionListener="#{controleEstado.editar(obj)}"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:dialog header="Info" widgetVar="Dialog" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="Detail" style="text-align:center;" >
+                        <p:panelGrid  columns="2" rendered="#{not empty controleEstado.lista}"
+                                      columnClasses="label,value"  style="width:300px">
+                            Teste: #{controleEstado.est.nome}
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

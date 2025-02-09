@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+encoding//Movimento/Compra/Compra.jrxml=UTF-8
+encoding//Movimento/Compra/CompraFiltro.jrxml=UTF-8
+encoding//Movimento/Compra/ItensCompra.jrxml=UTF-8
+encoding//Movimento/Producao/ItensProducao.jrxml=UTF-8
+encoding//Movimento/Producao/ProducaoFiltro.jrxml=UTF-8
+encoding//Movimento/Producao/relProducao.jrxml=UTF-8
+encoding//Movimento/Venda/ItensVenda.jrxml=UTF-8
+encoding//Movimento/Venda/VendaFiltro.jrxml=UTF-8
+encoding//Movimento/Venda/relVenda.jrxml=UTF-8
+encoding//cadastro/Cidade/relCid.jrxml=UTF-8
+encoding//cadastro/Cidade/relCidest.jrxml=UTF-8
+encoding//cadastro/Pessoa/relPessoa.jrxml=UTF-8
+encoding//cadastro/Produto/relProduto.jrxml=UTF-8
+encoding//cadastro/Produto/relProdutoGrupo.jrxml=UTF-8
+encoding//cadastro/Produto/relProdutoTipo.jrxml=UTF-8

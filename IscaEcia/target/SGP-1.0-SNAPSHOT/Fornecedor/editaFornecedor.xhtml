@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Pessoas</title>
+        <h:outputScript library="js" name="/CEP/CEP.js" /> 
+    </h:head>
+    
+    <h:body>
+        <ui:composition template="/index.xhtml">
+           <ui:define name="body">
+                 
+               <h:form prependId="false">  
+    <p:growl id="messages" showDetail="true" />
+ 
+    <p:toolbar>
+        <f:facet name="left">
+            <a href="editaPessoa.xhtml"></a>
+            <p:commandButton value="Inicio" action="/index"/>
+            <span class="ui-separator">
+                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+            </span>
+                
+                <p:outputLabel value="Pessoa" />
+        </f:facet>
+    </p:toolbar>
+       <p:growl autoUpdate="true" showDetail="true" sticky="true" />  
+         <p:panelGrid columns="2" layout="grid"> 
+             
+            <p:outputLabel value="Tipo Pessoa" style="width: 20px"/>    
+            <p:selectOneMenu id="tipo" value="#{controlePessoa.pes.tipo}" required="true">
+                        <f:selectItem itemLabel="" itemValue="" />
+                        <f:selectItem itemLabel="Fisica" itemValue="Fisica" />
+                        <f:selectItem itemLabel="Juridica" itemValue="Juridica" />
+            </p:selectOneMenu>
+             
+            
+            <p:outputLabel value="Nome:" style="width: 20%" />
+            <p:inputText value="#{controlePessoa.pes.nome}"
+                              required="true" 
+                              requiredMessage="O nome e Obrigatorio"
+                              id="NomePes"
+                              size="30"
+                              title="Nome Pessoa"
+                              style="width: 80%"/>
+            
+            <p:outputLabel id="Registro" value="CNPJ/CPF" style="width: 20%"/>    
+            <p:inputText value="#{controlePessoa.pes.registro}"
+                              required="true"
+                              requiredMessage="O nome e Obrigatorio"
+                              maxlength="20"
+                              id="Reg"
+                              title="Registro"
+                              onkeypress='mascaraMutuario(this,cpfCnpj)' onblur='clearTimeout()'
+                              />
+                  
+            <p:outputLabel value="Telefone" style="width: 20%"/>    
+            <p:inputMask mask="(99)9 9999-9999" value="#{controlePessoa.pes.contato}"
+                              required="true"
+                              requiredMessage="Numero de Contato e Obrigatorio"
+                              id="Telefone"
+                              title="Contato"
+                              />
+            
+            
+            <p:outputLabel value="Data Nascimento" />
+            <p:calendar id="Dtnasc" 
+                        value="#{controlePessoa.pes.dtnasc}"
+                        pattern="dd-MM-yyyy" mask="true" 
+                        />
+            
+            <p:outputLabel value="CEP" style="width: 20%"/>    
+            <p:inputMask mask="99999.999" value="#{controlePessoa.pes.CEP}"
+                              id="cep"
+                              title="Cep"
+                              onblur="pesquisacep(this.value);"
+                              onkeypress=""
+                              />
+                
+            <p:outputLabel value="Rua" style="width: 20%"/>    
+            <p:inputText value="#{controlePessoa.cli.rua}" 
+                              id="rua"
+                              size="50"
+                              title="endereço Pessoa"
+                              style="width: 80%"/>
+               
+            <p:outputLabel value="Bairro" style="width: 20%"/>    
+            <p:inputText value="#{controlePessoa.cli.bairro}" 
+                              id="bairro"
+                              size="50"
+                              title="endereço Pessoa"
+                              style="width: 80%"/>
+            
+            <p:outputLabel value="Cidade" style="width: 20%"/>    
+            <p:inputText value="#{controlePessoa.cid}"
+                            id="cidade"/>
+            
+            <p:outputLabel value="Estado" style="width: 20%"/>    
+            <p:autoComplete value="#{controlePessoa.estado}"
+                                   completeMethod="#{controleCidade.getListaestadoFiltrando}"
+                                           var="est"
+                                           itemLabel="#{est.nome}"
+                                           itemValue="#{est}"
+                                           converter="#{controleCidade.estadoconver}"
+                                           forceSelection="true"
+                                           dropdown="true"
+                                           />
+          
+           
+            <p:outputLabel value="Descricao" style="width: 20%"/>    
+            <p:inputText value="#{controlePessoa.cli.descricao}" 
+                              size="50"
+                              title="descricao Pessoa"
+                              style="width: 80%"/>
+         </p:panelGrid>
+               <p:commandButton value="Salvar" 
+                                actionListener="#{controlePessoa.salvar()}"
+                                 action="listaPessoa"
+                                />
+                <p:commandButton value="Voltar" 
+                                 immediate="true"
+                                 action="listaPessoa"
+                                 />
+
+            </h:form>
+           
+         
+           </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+    

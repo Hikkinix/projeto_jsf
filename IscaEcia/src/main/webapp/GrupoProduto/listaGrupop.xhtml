@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/index.xhtml">
+        <ui:define name="body">
+            
+        <h:form>     
+    <p:growl id="messages" showDetail="true" />
+ 
+    <p:toolbar>
+        <f:facet name="left">
+            <p:commandButton value="Voltar" action="/index"/>
+            <p:commandButton value="Novo" icon="ui-icon-document" 
+                             action="/GrupoProduto/editaGrupop"
+                             actionListener="#{controleGrupoproduto.novo()}"/>
+             <p:commandButton update="Detail" oncomplete="PF('Dialog').show()" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+           <span class="ui-separator">
+                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+            </span>
+                
+                <p:outputLabel value="Grupo Produto" />
+        </f:facet>
+    </p:toolbar>
+               
+                    <p:dataTable  value="#{controleGrupoproduto.lista}" var="obj"
+                             paginator="true" rows="10"
+                             paginatorTemplate="{PreviousPageLink} {RowsPerPageDropdown} {NextPageLink}"
+                             rowsPerPageTemplate="3,5,10"
+                             id="tableest" selectionMode="single" 
+                             selection="#{controleGrupoproduto.gprod}" rowKey="#{obj.id}" >
+       
+                   <p:column headerText="Id" sortBy="#{obj.id}" filterBy="#{obj.id}">
+                       <p:outputLabel value="#{obj.id}"/>
+                   </p:column>
+                   <p:column headerText="Descrição" sortBy="#{obj.descricao}" filterBy="#{obj.descricao}">
+                       <p:outputLabel value="#{obj.descricao}"/>
+                   </p:column>
+                   <p:column headerText="Unidade" sortBy="#{obj.medida}" filterBy="#{obj.medida}">
+                       <p:outputLabel value="#{obj.medida}" style="text-transform: uppercase !important"/>
+                   </p:column>
+                   <p:column headerText="---" width="90">
+                        <p:commandButton icon="ui-icon-closethick" 
+                                         action="listaGrupop.xhtml"
+                                         actionListener="#{controleGrupoproduto.excluir(obj)}"/>
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         immediate="true"
+                                         action="editaGrupop.xhtml"
+                                         actionListener="#{controleGrupoproduto.edita(obj)}"/>
+                   
+              
+    <p:dialog header="Info" widgetVar="Dialog" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="Detail" style="text-align:center;" >
+            <p:panelGrid  columns="2"  rendered="#{not empty controleGrupoProd.lista}"
+                          columnClasses="label,value" style="width:300px">
+                <h:outputText value="Id:" />
+                <h:outputText value="#{obj.id}" />
+ 
+                <h:outputText value="Descrição" />
+                <h:outputText value="#{obj.descricao}" style="text-transform: capitalize;"/>
+ 
+                <h:outputText value="Unidade:" />
+                <h:outputText value="#{obj.medida}" style="text-transform: uppercase;"/>
+ 
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+                         </p:column>
+               </p:dataTable>
+                   
+                    
+            
+         <p:dialog header="Info" widgetVar="Dialog" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="Detail" style="text-align:center;" >
+                        <p:panelGrid  columns="2" rendered="#{not empty controleGrupoproduto.lista}"
+                                      columnClasses="label,value"  style="width:300px">
+                            Teste: #{controleGrupoproduto.gprod.descricao}
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+    
+    
+             </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

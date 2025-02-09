@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"          
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Sistema Novo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <h:outputScript library="js" name="/mascaraMonetaria/Parsers.js" />
+        <h:outputScript library="js" name="/mascaraMonetaria/JavaScriptUtil.js" />
+        <h:outputScript library="js" name="/mascaraMonetaria/InputMask.js" />   
+        <h:outputScript library="js" name="/mascaraMonetaria/monetario.js" /> 
+        <h:outputScript library="js" name="/CpfCnpj/Cpf-Cnpj.js" />   
+        <h:outputScript library="js" name="/CEP/CEP.js" />  
+
+        <link rel="StyleSheet" type="text/css" href="css/cia.css" media="screen" ></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+
+
+
+    </h:head>
+    <h:body class="content">
+        <p:layout fullPage="true" style="border: none!important">
+
+            <p:layoutUnit position="west" size="15%" class="layout"
+                          header="Menu" closable="true" collapsible="true">
+
+                <h:form style="width: 97%">
+                    <p:menu style="width: 100%; border: none!important; align-items: center" toggleable="true" >
+                        <p:submenu label="Cadastros" rendered="true">  
+
+                            <p:menuitem rendered="#{controleLogin.validaMenu('ESTADO')}" value="Estado" action="/Estado/listaEstado"
+                                        /> 
+                            <p:menuitem rendered="#{controleLogin.validaMenu('CIDADE')}" value="Cidade" action="/Cidade/listaCidade"
+                                        /> 
+                            <p:menuitem rendered="#{controleLogin.validaMenu('PESSOA')}" value="Cliente" action="/Cliente/listaCliente"
+                                        />
+                            <p:menuitem rendered="#{controleLogin.validaMenu('PESSOA')}" value="Fornecededor" action="/Fornecdedor/listaFornecdedor"
+                                        />
+                            <p:menuitem rendered="#{controleLogin.validaMenu('GRUPO')}" value="Grupo Produto" action="/GrupoProduto/listaGrupop"
+                                        /> 
+                            <p:menuitem rendered="#{controleLogin.validaMenu('PRODUTO')}" value="Produto" action="/Produto/listaProduto"
+                                        />
+                            <p:menuitem rendered="#{controleLogin.validaMenu('PERFIL')}" value="Perfil" action="/Perfil/listaPerfil"
+                                        /> 
+                            <p:menuitem rendered="#{controleLogin.validaMenu('USUARIO')}" value="Usuario" action="/Usuario/listaUsuario"
+                                        />
+                            <p:menuitem rendered="#{controleLogin.validaMenu('FORMPAG')}" value="Forma Pagamento" action="/FormaPagamento/listaFormaPag"
+                                        />
+
+
+                        </p:submenu>
+                        <p:submenu label="Movimentos" rendered="true" > 
+                            <p:menuitem rendered="#{controleLogin.validaMenu('VENDA')}" value="Venda" action="/Venda/listaVenda"
+                                        />
+                            <p:menuitem rendered="#{controleLogin.validaMenu('COMPRA')}" value="Compra" action="/Compra/listaCompra"
+                                        />
+                            <p:menuitem rendered="#{controleLogin.validaMenu('CONTARECEBER')}" value="Contas a Receber" action="/ContasReceber/listaReceber"
+                                        />
+                            <p:menuitem value="Contas a Pagar" action="/ContasPagar/listaPagar"
+                                        />
+                        </p:submenu>
+                        <p:submenu label="Relatorios" rendered="true" > 
+                            <p:menuitem value="Relatorio Cidade" action="/Relatorios/relcid"
+                                        />
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center"  class="layout" >
+
+                <div class="topnav">
+                </div>
+
+
+                <ui:insert id="corpo" name="body">
+                    Seja bem vindo!
+                </ui:insert>
+
+
+                <div class="footer">
+                    <p:outputLabel value="Todos os direitos reservados @2018"/>
+                </div>
+
+            </p:layoutUnit>
+
+        </p:layout>        
+    </h:body>
+</html>
+

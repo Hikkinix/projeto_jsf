@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/index.xhtml">
+        <ui:define name="body">
+           
+            <h:form>     
+    <p:growl autoUpdate="true" showDetail="true" sticky="true" />   
+ 
+    <p:toolbar>
+        <f:facet name="left">
+            <p:commandButton value="Inicio" action="/index"/>
+            <span class="ui-separator">
+                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+            </span>
+                
+                <p:outputLabel value="Grupo Produto" />
+        </f:facet>
+    </p:toolbar>
+        <p:panel>
+          <h:panelGrid id="grid" columns="2" cellpadding="5" >  
+              
+            <p:outputLabel value="Descrição" style="width: 20%"/>    
+            <p:inputText value="#{controleGrupoproduto.gprod.descricao}"
+                              required="true"
+                              requiredMessage="O Descriçao e Obrigatorio"
+                              id="NomeEst"
+                              size="30"
+                              title="Nome Grupo de Produto"
+                              style="width: 80%"/>
+            
+            <p:outputLabel value="Unidade" style="width: 20%"/>
+            <p:inputText value="#{controleGrupoproduto.gprod.medida}"
+                              required="true"
+                              requiredMessage="O nome e Obrigatorio"
+                              id="Un"
+                              maxlength="2"
+                              size="2"
+                              title="Unidade de medida"
+                              style="text-transform: uppercase !important"/>
+            
+            <p:commandButton icon="ui-icon-disk"
+                             value="Salvar" 
+                             action="listaGrupop.xhtml"
+                             actionListener="#{controleGrupoproduto.salvar()}"/>
+            
+             <p:commandButton value="Voltar"
+                              icon="ui-icon-arrowrefresh-1-w"
+                              immediate="true" 
+                              action="listaGrupop.xhtml"/>
+       
+        </h:panelGrid>
+            </p:panel>
+                </h:form>  
+            
+            
+        </ui:define>
+    </ui:composition>
+</html>
+

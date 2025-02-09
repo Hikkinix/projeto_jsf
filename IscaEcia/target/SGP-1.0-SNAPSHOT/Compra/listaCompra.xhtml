@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Lista</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/index.xhtml">
+                    <ui:define name="body">
+
+                       <h:form id="listest">     
+             <p:growl id="messages" showDetail="true" />
+
+             <p:toolbar>
+                 <f:facet name="left">
+                     <p:commandButton value="Voltar" action="/index" />
+                     <p:commandButton value="Novo" icon="ui-icon-document" 
+                                      action="/Compra/editaCompra"
+                                      actionListener="#{controleCompra.novo()}" />
+                      <p:commandButton update="Detail" oncomplete="PF('Dialog').show()" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                     
+                     <span class="ui-separator">
+                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                     </span>
+
+                         <p:outputLabel value="Compra" />
+                 </f:facet>
+             </p:toolbar>
+                         
+                            <p:dataTable  value="#{controleCompra.lista}" var="obj"
+                                      paginator="true" rows="10"
+                                      paginatorTemplate="{PreviousPageLink} {RowsPerPageDropdown} {NextPageLink}"
+                                      rowsPerPageTemplate="3,5,10"
+                                      id="tableest" selectionMode="single" 
+                                      selection="#{controleVenda.venda}" rowKey="#{obj.id}" >
+
+                            <p:column headerText="Id" sortBy="#{obj.id}" filterBy="#{obj.id}">
+                                <p:outputLabel value="#{obj.id}"/>
+                            </p:column>
+                                
+                            <p:column headerText="Data Compra" sortBy="#{obj.datacompra}" filterBy="#{obj.datacompra}">
+                                <p:outputLabel value="#{obj.datacompra}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+                                </p:outputLabel>
+                            </p:column>
+                                
+                                <p:column headerText="Fornecedor" sortBy="#{obj.fornecedor.nome}" filterBy="#{obj.fornecedor.nome}">
+                                    <p:outputLabel value="#{obj.fornecedor.nome}"/>
+                            </p:column> 
+                            
+                            <p:column headerText="Total" sortBy="#{obj.total}" filterBy="#{obj.total}">
+                                <p:outputLabel value="#{obj.total}" converter="#{controleCompra.moneyConverter}"
+                                               style="text-transform: uppercase !important; size: 30px"/>
+                            </p:column> 
+                            <p:column headerText="---" width="90">
+                                
+                                 <p:commandButton icon="ui-icon-closethick" 
+                                                  immediate="true" 
+                                                  ajax="false"
+                                                  action="listaCompra.xhtml"
+                                                  actionListener="#{controleCompra.excluir(obj)}"/>
+                                     
+
+                             </p:column>
+                                
+                        </p:dataTable>
+                                
+             <p:dialog header="Info" widgetVar="Dialog" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="Detail" style="text-align:center;" >
+                        <p:panelGrid  columns="2" rendered="#{not empty controleCompra.lista}"
+                                      columnClasses="label,value"  style="width:300px">
+                            Teste: #{controleCompra.compra.id}
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+                                 
+
+                              </h:form>
+                    </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

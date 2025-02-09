@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/index.xhtml">
+        <ui:define name="body">       
+            <h:form>   
+                
+             <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton value="Voltar" action="/index"/>
+                        <p:commandButton value="Novo" action="editaPagar"
+                                 actionListener="#{controleContasPagar.novo()}"/>
+                         <p:commandButton update="Detail" oncomplete="PF('Dialog').show()" icon="ui-icon-search" title="View">
+                        </p:commandButton>
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <p:outputLabel value="ENTRADA" />
+                    </f:facet>
+                </p:toolbar>
+                
+                <p:dataTable value="#{controleContasPagar.lista}" var="obj"
+                            paginator="true" rows="10"
+                             paginatorTemplate="{PreviousPageLink} {RowsPerPageDropdown} {NextPageLink}"
+                             rowsPerPageTemplate="3,5,10"
+                             id="tableest" selectionMode="single" 
+                             selection="#{controleContasPagar.cp}" rowKey="#{obj.id}">
+                    <p:row>
+                       <p:column headerText="Situação" filterBy="#{obj.situacao}" filterMatchMode="contains">
+                              <h:outputText value="#{obj.situacao}" style="color: #{obj.situacao =='Aberto' ? 'red' : 'green'}"/>
+                    </p:column>  
+                    </p:row>
+                    <p:column headerText="Situação" filterBy="#{obj.situacao}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.situacao}" style="color: #{obj.situacao =='Aberto' ? 'red' : 'green'}"/>
+                    </p:column>
+                    <p:column headerText="Vencimento" filterBy="#{obj.vencimento}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.vencimento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cliente" filterBy="#{obj.pessoa.nome}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.pessoa.nome}"/>
+                    </p:column>
+                    <p:column headerText="Parcela" filterBy="#{obj.parcelas}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.parcelas}"/>
+                    </p:column>
+                    <p:column headerText="Total" filterBy="#{obj.valorTotal}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.valorTotal}" converter="#{controleContasPagar.moneyconverter}"/>
+                    </p:column>
+                    <p:column headerText="Baixado" filterBy="#{obj.valorPago}" filterMatchMode="contains">
+                        <h:outputText value="#{obj.valorPago}" converter="#{controleContasPagar.moneyconverter}"/>
+                    </p:column>
+                    <p:column headerText="Operações" width="140">
+                        <p:commandButton icon="ui-icon-closethick" 
+                                         immediate="true" 
+                                         action="listaPagar"
+                                         actionListener="#{controleContasPagar.excluir(obj)}"/>
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         immediate="true"
+                                         action="editaPagar"
+                                         actionListener="#{controleContasPagar.editar(obj)}"/>
+                        <p:commandButton icon="ui-icon-circle-arrow-s" 
+                                         immediate="true"
+                                         action="baixacontaspagar"
+                                         actionListener="#{controleContasPagar.novaBaixa(obj)}"/>
+                        
+                    </p:column>
+            
+                    
+                </p:dataTable>
+                
+                        
+                     <p:dialog header="Info" widgetVar="Dialog" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="Detail" style="text-align:center;" >
+                        <p:panelGrid  columns="2" rendered="#{not empty controleCidade.lista}"
+                                      columnClasses="label,value"  style="width:300px">
+                            Teste: #{controleCidade.cid.nome}
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+               </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

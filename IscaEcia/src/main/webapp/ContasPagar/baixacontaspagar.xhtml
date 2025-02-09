@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/index.xhtml">
+        <ui:define name="body">
+            <h1 align="center">Movimento de Baixa de Contas a Receber</h1>        
+            <h:form>
+                <p:growl autoUpdate="true"/>
+                <p:panel header="Conta a receber">
+                    <p:panelGrid columns="2">                
+                        Vencimento:<p:outputLabel value="#{controleContasPagar.cp.vencimento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+                        </p:outputLabel>
+                        Cliente:<p:outputLabel value="#{controleContasPagar.cp.pessoa.nome}"/>
+                        Parcela:<p:outputLabel value="#{controleContasPagar.cp.parcelas}"/>
+                        Descrição:<p:outputLabel value="#{controleContasPagar.cp.descricao}"/>
+                        Valor:<p:outputLabel value="#{controleContasPagar.cp.valorTotal}"/>
+                    </p:panelGrid>                
+                </p:panel>
+                <p:panelGrid columns="2">
+                    Data baixa:<p:calendar value="#{controleContasPagar.baixa.databaixa}"
+                                           pattern="dd/MM/yyyy"
+                                           locale="pt_BR"/>
+                    Valor:<p:inputText value="#{controleContasPagar.baixa.valor}" 
+                                       size="20"/>
+
+                    <p:commandButton value="Baixar" 
+                                     actionListener="#{controleContasPagar.baixar()}"
+                                     action="baixacontaspagar"
+                                     ajax="false" />
+                </p:panelGrid>
+                <p:dataTable value="#{controleContasPagar.cp.baixaPagar}"
+                             var="b">
+                    <p:column>
+                        <p:outputLabel value="#{b.databaixa}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{b.valor}" 
+                                       converter="#{controleContasPagar.moneyconverter}"/>
+                    </p:column> 
+                    <p:column>
+                        <p:commandButton icon="ui-icon-closethick" 
+                                         ajax="false" 
+                                         immediate="true" 
+                                         action="baixacontaspagar.xhtml"
+                                         actionListener="#{controleContasPagar.removerBaixa(b)}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Total baixado: "/>
+                    <p:outputLabel value="#{controleContasPagar.cp.valorPago}" style="color: #{controleContasPagar.corValor}"/>
+                    <p:commandButton value="Salvar" 
+                                     actionListener="#{controleContasPagar.salvar()}"
+                                     action="listaPagar"
+                                     ajax="false" />
+                    <p:commandButton value="Voltar"
+                                     immediate="true"
+                                     action="listapagar"
+                                     ajax="false" />
+                </p:panelGrid>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

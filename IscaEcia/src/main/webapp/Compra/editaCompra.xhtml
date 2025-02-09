@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"          
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Compra</title>
+    </h:head>
+    <h:body>
+     <ui:composition template="/index.xhtml">
+        <ui:define name="body">
+            <h:form>     
+    <p:growl id="messages" showDetail="true" />
+ 
+    <p:toolbar>
+        <f:facet name="left">
+            <p:commandButton value="Inicio" action="/index"/>
+            <span class="ui-separator">
+                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+            </span>
+                
+                <p:outputLabel value="Compra" />
+        </f:facet>
+    </p:toolbar>
+                    <p:growl autoUpdate="true" showDetail="true" sticky="true" />    
+         <p:panel>
+                <h:panelGrid id="grid" columns="2" cellpadding="5" >  
+            <p:outputLabel value="Fornecedor"/>
+            <p:autoComplete value="#{controleCompra.compra.fornecedor}"
+                            completeMethod="#{controleCompra.getListFornecedorFiltrando}"
+                                           var="est"
+                                           itemLabel="#{est.nome}"
+                                           itemValue="#{est}"
+                                           converter="#{controleCompra.fornecedorConver}"
+                                           forceSelection="true"
+                                           />
+            
+            Forma Pagamento:<p:autoComplete value="#{controleCompra.forma}"
+                                            completeMethod="#{controleContasPagar.getListaFormasFiltrando}"
+                                           var="cli"
+                                           itemLabel="#{cli.nome}"
+                                           itemValue="#{cli}"
+                                           converter="#{controleContasReceber.formaconver}"
+                                           forceSelection="true"
+                                           size="50"
+                                           />
+                    
+                        <p:outputLabel value="Numero de parcelas:" style="width: 20%"/>
+                        <p:inputText value="#{controleCompra.parc}" size="2"/>
+            
+            <p:outputLabel value="Data Compra" />
+            <p:calendar value="#{controleCompra.compra.datacompra}"
+                        required="True"
+                        requiredMessage="Data Obrigatoria"
+                        id="dtcompra"
+                        locale="pt_BR"/>
+            <p:outputLabel value="Total"/>
+            <p:outputLabel value="#{controleCompra.compra.total}"/>
+    
+        </h:panelGrid>
+
+                    <p:panelGrid id="Itens" columns="2" style="align-items: center !important">
+                        <p:outputLabel value="Produto" style="width: 20%"/>
+                        <p:autoComplete value="#{controleCompra.itens.produto}"
+                                        completeMethod="#{controleCompra.getListProdutosFiltrando}"
+                                           var="a"
+                                           itemLabel="#{a.nome}"
+                                           itemValue="#{a}"
+                                           converter="#{controleCompra.produtoConverter}"
+                                           forceSelection="true"
+                                           >
+                            <p:ajax listener="#{controleCompra.atualizaPrecoProduto()}" 
+                                    update="itempreco" event="itemSelect"/>
+                            
+                        </p:autoComplete>
+                        
+                         <p:outputLabel value="Preço" style="width: 20%"/>
+                         <p:inputText value="#{controleCompra.itens.preco}"
+                                      id="itempreco"
+                                      converter="#{controleCompra.moneyConverter}"
+                                      onkeydown="mascaraMonetaria(this)"
+                                      />
+                         
+                         <p:outputLabel value="Quantidade" style="width: 20%"/>
+                         <p:inputText value="#{controleCompra.itens.quantidade}"
+                                      id="quantidade"
+                                      />
+                         
+                    </p:panelGrid>            
+                    <p:commandButton actionListener="#{controleCompra.addproduto()}"
+                                     value="Adicionar" ajax="false"/>
+                    
+                    <p:dataTable emptyMessage="Nenhum Produto adicionado"
+                                 value="#{controleCompra.compra.itens}"
+                                 var="it">
+                    
+                    <p:column headerText="Produto">
+                        <p:outputLabel value="#{it.produto.nome}"/>
+                    </p:column>
+                                   
+                    <p:column headerText="Preço">
+                        <p:outputLabel value="#{it.preco}" converter="#{controleCompra.moneyConverter}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Sub-Total">
+                        <p:outputLabel value="#{it.subtotal}"/>
+                    </p:column>
+                    
+                    <p:column headerText="---">
+                        <p:commandButton icon="ui-icon-closethick" 
+                                          
+                                         immediate="true"
+                                         actionListener="#{controleCompra.remove(it)}"/>
+                    </p:column>
+                    </p:dataTable>
+                    
+                           <p:dialog header="Info" widgetVar="Dialog" showEffect="fade" hideEffect="fade" resizable="false">
+                                  </p:dialog>
+       <p:outputPanel id="Detail" style="text-align:center;" >
+                           <p:panel header="Parcelas">
+                     
+                <h:panelGrid columns="2" cellpadding="5" style="align-items:center;" >  
+                        
+                    
+                           
+                    <p:dataTable value="#{controleCompra.compra.contasPagar}"
+                                 emptyMessage="Pagamento não definido"
+                                var="cr">                        
+                        <p:column headerText="Parcela">
+                            <p:outputLabel value="#{cr.parcelas}"/>
+                        </p:column>
+                        <p:column headerText="Vencimento">
+                            <p:outputLabel value="#{cr.vencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+                            </p:outputLabel>
+                        </p:column>                                                                     
+                        <p:column headerText="Valor">
+                            <p:outputLabel value="#{cr.valorParcela}"/>
+                        </p:column>
+                      
+                    </p:dataTable>
+                            <p:commandButton value="Gerar" ajax="false" 
+                                actionListener="#{controleCompra.gerarParcelas()}"/>    
+                                
+                            </h:panelGrid>    
+                </p:panel>
+              
+     
+
+             <p:commandButton icon="ui-icon-disk" 
+                                         value="Salvar"  
+                                         action="listaCompra.xhtml"
+                                         actionListener="#{controleCompra.salvar()}"/>
+             <p:commandButton icon="ui-icon-arrowrefresh-1-w" 
+                                         value="Voltar"
+                                         ajax="false"
+                                         action="listaCompra.xhtml"/>
+       </p:outputPanel>
+         </p:panel>
+                </h:form>  
+        </ui:define>
+     </ui:composition>
+        
+    </h:body>
+</html>
+
